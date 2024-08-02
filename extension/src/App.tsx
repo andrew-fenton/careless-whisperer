@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+export default function App() {
   return (
-    <div className="App bg-red-50">
-      Hello World
+    <div className="App">
+      <div className="container">
+        <h1 className="text-3xl font-bold underline">
+          Hello world!
+        </h1>
+      </div>
     </div>
   );
 }
-
-export default App;
