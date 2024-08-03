@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import { gptRouter } from "./routes/gptRouter";
+import { gptRouter } from "./routes/GPTRouter";
 
 dotenv.config();
 
