@@ -22,8 +22,8 @@ const ChatBox: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '240px',
-        height: '320px',
+        width: '320px',
+        height: '400px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -66,6 +66,7 @@ const ChatBox: React.FC = () => {
             overflow: 'auto',
             width: '100%',
             borderRadius: '4px',
+            borderColor: '#ccc',
           }}
         />
       </Box>
