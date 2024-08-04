@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
 import { Box, List, ListItem, ListItemText, Paper, TextareaAutosize } from '@mui/material';
+import ChatService from '../services/ChatService';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const [isResponding, setIsResponding] = useState<boolean>(false);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() !== '') {
-      setMessages([...messages, inputValue]);
-      setInputValue('');
+      if (!isResponding) {
+        setIsResponding(true);
+        const promptMessage = inputValue;
+        setInputValue('');
+        setMessages((prevMessages) => [...prevMessages, promptMessage]);
+        const response = await handleSendQuery(promptMessage);
+        setMessages((prevMessages) => [...prevMessages, response]);
+        setIsResponding(false);
+      }
     }
   };
 
@@ -17,6 +26,12 @@ const ChatBox: React.FC = () => {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleSendQuery = async (prompt: string) => {
+      const response = await ChatService.sendPrompt(prompt);
+      console.log(response);
+      return response;
   };
 
   return (
