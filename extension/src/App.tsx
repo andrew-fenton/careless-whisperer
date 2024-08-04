@@ -1,13 +1,13 @@
-import React from 'react';
 import './App.css';
+import ChatBox from './components/ChatBox';
+import NavBar from './components/NavBar';
 
 export default function App() {
   return (
     <div className="App">
       <div className="container">
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
+        <NavBar />
+        <ChatBox />
       </div>
     </div>
   );
