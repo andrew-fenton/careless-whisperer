@@ -12,7 +12,7 @@ export class GPTController {
     static async *gptQuery(query: string): AsyncGenerator<string, void, unknown> {
         const stream = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{ role: "user", content: "Say this is a test" }],
+            messages: [{ role: "user", content: query }],
             stream: true,
         });
     

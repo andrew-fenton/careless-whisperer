@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import { gptRouter } from "./routes/GPTRouter";
+import { gptRouter } from "./routes/gptRouter";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Backend API");
