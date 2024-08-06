@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { Box, List, ListItem, ListItemText, Paper, TextareaAutosize } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, List, ListItem, ListItemText, Paper, TextareaAutosize, IconButton, Tooltip } from '@mui/material';
 import ChatService from '../services/ChatService';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const [isResponding, setIsResponding] = useState<boolean>(false);
+  const [tooltipOpen, setTooltipOpen] = useState<number | null>(null);
+  const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = async () => {
     if (inputValue.trim() !== '') {
@@ -29,10 +32,27 @@ const ChatBox: React.FC = () => {
   };
 
   const handleSendQuery = async (prompt: string) => {
-      const response = await ChatService.sendPrompt(prompt);
-      console.log(response);
-      return response;
+    const response = await ChatService.sendPrompt(prompt);
+    console.log(response);
+    return response;
   };
+
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setTooltipOpen(index);
+        setTimeout(() => setTooltipOpen(null), 1000); 
+      },
+      (err) => {
+        console.error('Could not copy text: ', err);
+      }
+    );
+  };
+
+  useEffect(() => {
+    // Scroll to the bottom when messages change
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <Box
@@ -51,11 +71,63 @@ const ChatBox: React.FC = () => {
     >
       <Paper elevation={3} sx={{ flexGrow: 1, overflowY: 'auto', mb: 1, p: 1 }}>
         <List>
-          {messages.map((message, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={message} />
-            </ListItem>
-          ))}
+          {messages.map((message, index) => {
+            const isPrompt = index % 2 === 0;
+            return (
+              <ListItem
+                key={index}
+                sx={{
+                  justifyContent: isPrompt ? 'flex-end' : 'flex-start',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 1,
+                    borderRadius: isPrompt ? '16px 16px 0 16px' : '16px 16px 16px 0',
+                    maxWidth: '95%',
+                    bgcolor: isPrompt ? '#3a9ffc' : '#f0f0f0',
+                    color: isPrompt ? 'white' : 'black',
+                    wordWrap: 'break-word',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <ListItemText primary={message} sx={{ wordBreak: 'break-word' }} />
+                  {!isPrompt && (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <Tooltip
+                        title="Copied to clipboard!"
+                        open={tooltipOpen === index}
+                        onClose={() => setTooltipOpen(null)}
+                        disableFocusListener
+                        disableHoverListener
+                        disableTouchListener
+                      >
+                        <IconButton
+                          onClick={() => copyToClipboard(message, index)}
+                          sx={{
+                            color: '#757575', 
+                            '&:hover': {
+                              color: 'black', 
+                            },
+                            fontSize: '0.75rem', 
+                            padding: '0px', 
+                            marginTop: '0', 
+                          }}
+                          size="small"
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  )}
+                </Box>
+              </ListItem>
+            );
+          })}
+          {/* Dummy element to allow scrolling to the bottom */}
+          <div ref={endOfMessagesRef} />
         </List>
       </Paper>
       <Box
@@ -72,7 +144,7 @@ const ChatBox: React.FC = () => {
           value={inputValue}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Chat here, ↩ to send"
+          placeholder="Type here, enter to send"
           style={{
             resize: 'none',
             padding: '8px',
