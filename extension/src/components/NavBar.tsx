@@ -42,7 +42,7 @@ const NavBar: React.FC = () => {
           sx={{ p: 0 }}
         >
             <img 
-            src="/careless-whisperer-icon.png" // Path to the image in the public folder
+            src="/careless-whisperer-icon.png"
             alt="Logo"
             style={{ height: '20px', width: 'auto' }} // Adjust size as needed
             />
