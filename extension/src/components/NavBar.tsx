@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, IconButton, Switch } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import MessageIcon from '@mui/icons-material/Message';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
-const NavBar: React.FC = () => {
-  const [isToggled, setIsToggled] = useState<boolean>(false);
+interface NavBarProps {
+  onToggleChange: (checked: boolean) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ onToggleChange }) => {
+  const [isToggled, setIsToggled] = React.useState<boolean>(true);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsToggled(event.target.checked);
-  };
-
-  const handleToggleClick = (side: 'left' | 'right') => {
-    if (side === 'right') {
-      setIsToggled(true);
-    } else if (side === 'left') {
-      setIsToggled(false);
-    }
+    const checked = event.target.checked;
+    setIsToggled(checked);
+    onToggleChange(checked);
   };
 
   const handleInfoClick = () => {
@@ -37,15 +35,12 @@ const NavBar: React.FC = () => {
       }}
     >
       <Box sx={{ flex: '1', display: 'flex', alignItems: 'center' }}>
-      <IconButton 
-          onClick={handleInfoClick} 
-          sx={{ p: 0 }}
-        >
-            <img 
+        <IconButton onClick={handleInfoClick} sx={{ p: 0 }}>
+          <img
             src="/careless-whisperer-icon.png"
             alt="Logo"
-            style={{ height: '20px', width: 'auto' }} // Adjust size as needed
-            />
+            style={{ height: '20px', width: 'auto' }}
+          />
         </IconButton>
       </Box>
 
@@ -57,8 +52,8 @@ const NavBar: React.FC = () => {
           justifyContent: 'center',
         }}
       >
-        <IconButton 
-          onClick={() => handleToggleClick('left')} 
+        <IconButton
+          onClick={() => handleToggleChange({ target: { checked: true } } as any)}
           sx={{ p: 0, color: isToggled ? 'grey' : '#3a9ffc' }}
         >
           <MessageIcon />
@@ -76,8 +71,8 @@ const NavBar: React.FC = () => {
             }
           }}
         />
-        <IconButton 
-          onClick={() => handleToggleClick('right')} 
+        <IconButton
+          onClick={() => handleToggleChange({ target: { checked: false } } as any)}
           sx={{ p: 0, color: isToggled ? '#8B4513' : 'grey' }}
         >
           <InsertDriveFileIcon />
@@ -85,10 +80,7 @@ const NavBar: React.FC = () => {
       </Box>
 
       <Box sx={{ flex: '1', display: 'flex', justifyContent: 'flex-end' }}>
-        <IconButton 
-          onClick={handleInfoClick} 
-          sx={{ p: 0 }}
-        >
+        <IconButton onClick={handleInfoClick} sx={{ p: 0 }}>
           <InfoIcon />
         </IconButton>
       </Box>
