@@ -41,7 +41,7 @@ const UploadingFile: React.FC = () => {
         <strong>Your writer needs your writing</strong>
       </Typography>
       <Typography variant="body2" align="center" sx={{ mb: 2 }}>
-        Upload your past professional documents here!
+        Upload past professional documents here!
       </Typography>
 
       <Button
