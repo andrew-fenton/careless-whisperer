@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, List, ListItem, ListItemText, Paper, TextareaAutosize, IconButton, Tooltip } from '@mui/material';
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  TextareaAutosize,
+  IconButton,
+  Tooltip,
+  CircularProgress,
+} from '@mui/material';
 import ChatService from '../services/ChatService';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
@@ -8,6 +18,7 @@ const ChatBox: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [isResponding, setIsResponding] = useState<boolean>(false);
   const [tooltipOpen, setTooltipOpen] = useState<number | null>(null);
+  const [dots, setDots] = useState<string>('.');
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = async () => {
@@ -41,7 +52,7 @@ const ChatBox: React.FC = () => {
     navigator.clipboard.writeText(text).then(
       () => {
         setTooltipOpen(index);
-        setTimeout(() => setTooltipOpen(null), 1000); 
+        setTimeout(() => setTooltipOpen(null), 1000);
       },
       (err) => {
         console.error('Could not copy text: ', err);
@@ -50,9 +61,20 @@ const ChatBox: React.FC = () => {
   };
 
   useEffect(() => {
-    // Scroll to the bottom when messages change
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isResponding) {
+      interval = setInterval(() => {
+        setDots((prevDots) => (prevDots.length < 3 ? prevDots + '.' : '.'));
+      }, 500);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isResponding]);
 
   return (
     <Box
@@ -85,7 +107,7 @@ const ChatBox: React.FC = () => {
                   sx={{
                     p: 1,
                     borderRadius: isPrompt ? '16px 16px 0 16px' : '16px 16px 16px 0',
-                    maxWidth: '95%',
+                    maxWidth: '100%',
                     bgcolor: isPrompt ? '#3a9ffc' : '#f0f0f0',
                     color: isPrompt ? 'white' : 'black',
                     wordWrap: 'break-word',
@@ -107,13 +129,13 @@ const ChatBox: React.FC = () => {
                         <IconButton
                           onClick={() => copyToClipboard(message, index)}
                           sx={{
-                            color: '#757575', 
+                            color: '#757575',
                             '&:hover': {
-                              color: 'black', 
+                              color: 'black',
                             },
-                            fontSize: '0.75rem', 
-                            padding: '0px', 
-                            marginTop: '0', 
+                            fontSize: '0.75rem',
+                            padding: '0px',
+                            marginTop: '0',
                           }}
                           size="small"
                         >
@@ -126,6 +148,12 @@ const ChatBox: React.FC = () => {
               </ListItem>
             );
           })}
+          {isResponding && (
+            <ListItem sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+              <CircularProgress size={24} />
+              <Box sx={{ mt: 1, fontSize: '14px', color: '#757575' }}>cooking{dots}</Box>
+            </ListItem>
+          )}
           {/* Dummy element to allow scrolling to the bottom */}
           <div ref={endOfMessagesRef} />
         </List>
