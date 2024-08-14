@@ -3,6 +3,10 @@
     "manifest_version": 3,
     "name": "Careless Whisperer",
     "description": "For the writings that don't really matter",
+    "permissions": [
+        "activeTab",
+        "microphone"
+    ],
     "action": {
       "default_popup": "js/index.html",
       "default_title": "Careless Whisperer"

@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import ChatService from '../services/ChatService';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import VoiceButton from './VoiceButton';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -187,6 +188,7 @@ const ChatBox: React.FC = () => {
           }}
         />
       </Box>
+      <VoiceButton />
     </Box>
   );
 };
