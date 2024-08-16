@@ -26,8 +26,14 @@ class VoiceController {
         this.speech.stop();
     }
 
-    onResult(callback: (event: any) => void) {
-        this.speech.onresult = callback;
+    getTranscript(callback: (transcript: string) => void) {
+        this.speech.onresult = (event: any) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            callback(transcript);
+        };
     }
 
     onError(callback: (event: any) => void) {
