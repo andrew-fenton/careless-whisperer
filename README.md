@@ -1,27 +1,19 @@
 Careless Whisperer
+Welcome to Careless Whisperer, your AI-powered assistant for generating the writings that don't really matter but still need a personal touch.
 
-Hello hello there and welcome to Careless Whisperer aka your AI generator for the writings that don't really matter.
+Overview
+In both academic and professional settings, there are tasks that require personalization but have minimal impact—think of assignments done just for attendance, cover letters that might not get a second glance, or applications to extracurricular activities. Careless Whisperer is designed to streamline these tasks, making it easier for you to generate personalized content quickly and efficiently.
 
-Throughout our academic and professional lives, we realize that there are things that need to be personalized, but don't really affect anything. Think the assignments for only for attendance, cover letters that no one will ever read, application to  extracurriculars,etc....
+Our Vision
+Convenience First: Our initial goal is to build a Minimum Viable Product (MVP) that reduces the friction between writers and Language Learning Models (LLMs). Imagine using Careless Whisperer like your everyday ChatGPT, but without needing to open the app. Instead, you can provide input through text or voice directly from a Chrome extension. Our backend will intelligently select the best LLM for each task and keep track of your preferences to improve future responses.
 
-Ideally, Careless Whisperer is here to solve that. Imagine if you only need to highlight the question, say 2-3 sentences to describe how you would answer it and receive the text, in your own writing style, right away.
+We are currently at this stage and are excited to launch our MVP to the public soon.
 
-Are we there yet? Not quite. But here is the 2-step plan:
+Use Your Writing to Improve Your Writing: The next step involves creating a portal to store and classify your past writings—cover letters, class assignments, and more—so we can replicate your style as closely as possible. This phase will introduce additional steps like creating login credentials and addressing potential privacy concerns, which is why we’ve planned it for later.
 
-1. Conveniency
-First, we want to build an MVP that reduces the friction between LLMs and writers.
+Timeline and Goals
+We set a challenging goal to deliver a robust MVP within one month, coinciding with the end of our internships and the start of recruiting season. Our aim is to enhance our technical understanding and execution abilities through this project.
 
-Think of it as your everyday ChatGPT but you don't have to open the app, and have the option to state how you would answer via text or voice. This is why we decided to build it as a chrome extension.
+Thank you for your interest in Careless Whisperer. We’re excited to have you on this journey with us!
 
-The backend will work to decide the best LLM to use for that task, and keep context of what you liked and worked for you before.
-
-We are currently here and are about to launch our MVP to the public.
-
-2. Use your writing to make your writing
-We will now have a portal to keep and classify your past writings: cover letter, class assignments,...so that we can replicate it as close as possible!
-
-This would require additional steps of creating log in credentials and potential privacy problem, which is why we wanted to build it later.
-
-We set ourselves up with the task to have as good of an MVP as possible in 1 month, right at the end of our internships and at the beginning of recruiting season. We hope this enhanced learning experience would help with our technical understanding and ability to execute.
-
-If you have read all of this, thank you!
+And yes, this is written with the help of the product!
