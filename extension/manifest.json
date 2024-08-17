@@ -7,6 +7,12 @@
       "default_popup": "js/index.html",
       "default_title": "Careless Whisperer"
     },
+    "background": {
+      "service_worker": "js/background.js"
+    },
+    "permissions": [
+      "tabs"
+    ],
     "icons": {
       "16": "careless-whisperer-icon.png",
       "48": "careless-whisperer-icon.png",
