@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.270",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "autoprefixer": "^10.4.19",
     "copy-webpack-plugin": "^12.0.2",

@@ -2,11 +2,26 @@
     "version": "1.0.0",
     "manifest_version": 3,
     "name": "Careless Whisperer",
-    "description": "For the writings that don't really matter",
+    "description": "Write different.",
     "action": {
       "default_popup": "js/index.html",
       "default_title": "Careless Whisperer"
     },
+    "permissions": [
+      "tabs"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["js/permissions.html", "js/requestPermission.js"],
+        "matches": ["*://*/*"]
+      }
+    ],
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["js/injectDOM.js"]
+      }
+    ],
     "icons": {
       "16": "careless-whisperer-icon.png",
       "48": "careless-whisperer-icon.png",

@@ -4,7 +4,9 @@ const CopyPlugin = require("copy-webpack-plugin")
 
 module.exports = {
     entry: {
-        index: "./src/index.tsx"
+        index: "./src/index.tsx",
+        injectDOM: "./src/scripts/injectDOM.ts",
+        requestPermission: "./src/scripts/requestPermission.ts",
     },
     mode: "production",
     module: {
@@ -34,6 +36,8 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "manifest.json", to: "../manifest.json" },
+                { from: "public/careless-whisperer-icon.png", to: "../careless-whisperer-icon.png" },
+                { from: "src/pages/permissions.html", to: "../js/permissions.html" },
             ],
         }),
         ...getHtmlPlugins(["index"]),
