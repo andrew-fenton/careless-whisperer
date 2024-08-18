@@ -23,11 +23,11 @@ const ChatBox: React.FC = () => {
   const [dots, setDots] = useState<string>('.');
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
-  const handleSendMessage = async () => {
-    if (inputValue.trim() !== '') {
+  const handleSendMessage = async (message: string) => {
+    if (message.trim() !== '') {
       if (!isResponding) {
         setIsResponding(true);
-        const promptMessage = inputValue;
+        const promptMessage = message;
         setInputValue('');
         setMessages((prevMessages) => [...prevMessages, promptMessage]);
         const response = await handleSendQuery(promptMessage);
@@ -40,7 +40,7 @@ const ChatBox: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSendMessage(inputValue);
     }
   };
 
@@ -174,9 +174,13 @@ const ChatBox: React.FC = () => {
         component="form"
         onSubmit={(e) => {
           e.preventDefault();
-          handleSendMessage();
+          handleSendMessage(inputValue);
         }}
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center', // Vertically centers the children
+          justifyContent: 'space-between', // Ensures the TextareaAutosize takes up the rest of the space
+        }}
       >
         <TextareaAutosize
           minRows={1}
@@ -191,13 +195,14 @@ const ChatBox: React.FC = () => {
             fontSize: '16px',
             boxSizing: 'border-box',
             overflow: 'auto',
-            width: '100%',
+            width: '100%', // Occupies all available space
             borderRadius: '4px',
             borderColor: '#ccc',
+            marginRight: '8px', // Adds space between the TextareaAutosize and the VoiceButton
           }}
         />
+        <VoiceButton handleSendMessage={handleSendMessage} />
       </Box>
-      <VoiceButton />
     </Box>
   );
 };
