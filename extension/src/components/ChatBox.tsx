@@ -3,23 +3,24 @@ import {
   Box,
   List,
   ListItem,
-  ListItemText,
   Paper,
   TextareaAutosize,
   IconButton,
   Tooltip,
-  CircularProgress, // Import the CircularProgress component
+  CircularProgress,
 } from '@mui/material';
 import ChatService from '../services/ChatService';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VoiceButton from './VoiceButton';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const [isResponding, setIsResponding] = useState<boolean>(false);
   const [tooltipOpen, setTooltipOpen] = useState<number | null>(null);
-  const [dots, setDots] = useState<string>('.'); // State to manage dots for animation
+  const [dots, setDots] = useState<string>('.');
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = async () => {
@@ -62,20 +63,18 @@ const ChatBox: React.FC = () => {
   };
 
   useEffect(() => {
-    // Scroll to the bottom when messages change
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isResponding) {
-      // Set interval to update dots while waiting for response
       interval = setInterval(() => {
         setDots((prevDots) => (prevDots.length < 3 ? prevDots + '.' : '.'));
       }, 500);
     }
     return () => {
-      clearInterval(interval); // Clear interval when no longer responding
+      clearInterval(interval);
     };
   }, [isResponding]);
 
@@ -118,7 +117,18 @@ const ChatBox: React.FC = () => {
                     flexDirection: 'column',
                   }}
                 >
-                  <ListItemText primary={message} sx={{ wordBreak: 'break-word' }} />
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      strong: ({node, ...props}) => <span style={{fontWeight: 'bold'}} {...props} />,
+                      em: ({node, ...props}) => <span style={{fontStyle: 'italic'}} {...props} />,
+                      ul: ({node, ...props}) => <ul style={{paddingLeft: '20px', margin: '5px 0'}} {...props} />,
+                      ol: ({node, ...props}) => <ol style={{paddingLeft: '20px', margin: '5px 0'}} {...props} />,
+                      li: ({node, ...props}) => <li style={{marginBottom: '5px'}} {...props} />,
+                    }}
+                  >
+                    {message}
+                  </ReactMarkdown>
                   {!isPrompt && (
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <Tooltip
@@ -157,7 +167,6 @@ const ChatBox: React.FC = () => {
               <Box sx={{ mt: 1, fontSize: '14px', color: '#757575' }}>cooking{dots}</Box>
             </ListItem>
           )}
-          {/* Dummy element to allow scrolling to the bottom */}
           <div ref={endOfMessagesRef} />
         </List>
       </Paper>
