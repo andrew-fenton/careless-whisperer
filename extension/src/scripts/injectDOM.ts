@@ -1,3 +1,6 @@
+/**
+ * Injects a hidden IFrame into the website being currently viewed
+ */
 const iframe = document.createElement("iframe");
 iframe.setAttribute("hidden", "hidden");
 iframe.setAttribute("id", "permissionsIFrame");
