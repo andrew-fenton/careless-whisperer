@@ -1,9 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import VoiceController from "../controllers/VoiceController";
 import MicIcon from '@mui/icons-material/Mic';
 
+declare global {
+    interface Window {
+        SpeechRecognition: any;
+        webkitSpeechRecognition: any;
+    }
+}
+
 export default function VoiceButton() {
-    // Web Speech API Config
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
@@ -21,7 +26,6 @@ export default function VoiceButton() {
 
     const handleClick = async () => {
         try {
-            // Get microphone permissions
             if (SpeechRecognition) console.log("Browser supports speech recognition.");            
             recognition.start();
             console.log("Speech recognition started.");
