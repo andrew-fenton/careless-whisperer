@@ -34,8 +34,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Test the database connection and sync models
-sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log(`Server is running on port ${port}.`);
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection established successfully.');
+    return sequelize.sync({ force: true });
+  })
+  .then(() => {
+    console.log("Database and tables synced.");
+    app.listen(3000, () => {
+      console.log(`Server is running on port ${port}.`);
+    });
+  })
+  .catch(error => {
+    console.error("Unable to connect or sync the database:", error);
   });
-}).catch(error => console.log("Database connection failed:", error));
