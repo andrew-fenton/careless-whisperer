@@ -18,6 +18,7 @@ passport.deserializeUser(async (id: number, done) => {
     }
 });
 
+console.log("Registering Google strategy")
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || "",
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
@@ -45,3 +46,5 @@ passport.use(new GoogleStrategy({
         done(err, false);
     }
 }));
+
+export default passport;

@@ -2,10 +2,13 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import session from "express-session";
-import passport from "passport";
+import passport from "./config/passport";
 import sequelize from "./config/sequelize";
 import gptRouter from "./routes/gpt";
-import authRouter from "./routes/auth"
+import authRouter from "./routes/auth";
+
+// Import models
+import "./models/user";
 
 dotenv.config();
 
@@ -34,17 +37,20 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Test the database connection and sync models
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection established successfully.');
-    return sequelize.sync({ force: true });
-  })
-  .then(() => {
+const start = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+
+    await sequelize.sync();
     console.log("Database and tables synced.");
+
     app.listen(3000, () => {
       console.log(`Server is running on port ${port}.`);
     });
-  })
-  .catch(error => {
-    console.error("Unable to connect or sync the database:", error);
-  });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+};
+
+start();
