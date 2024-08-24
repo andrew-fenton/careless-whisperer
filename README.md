@@ -20,4 +20,4 @@ The next step involves creating a portal to store and classify your past writing
 ## Timeline and Goals
 We set a challenging goal to deliver a robust MVP within one month, coinciding with the end of our internships and the start of recruiting season. Our aim is to enhance our technical understanding and execution abilities through this project.
 
-Thank you for your reading! Yes this was generated with the help of the product!
+Thank you for your reading! Yes this was generated using Careless Whisperer!
