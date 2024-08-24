@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { GPTController } from "../controllers/gptController";
 
-export const gptRouter = Router();
+const router = Router();
 
-gptRouter.post("/query", async (req, res) => {
+router.post("/query", async (req, res) => {
     try {
         const data = req.body;
 
@@ -24,3 +24,5 @@ gptRouter.post("/query", async (req, res) => {
         res.send("An error occurred");
     }
 });
+
+export default router
