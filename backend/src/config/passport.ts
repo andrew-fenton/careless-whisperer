@@ -37,8 +37,6 @@ passport.use(new GoogleStrategy({
             user = await User.create({
                 googleId: profile.id,
                 email,
-                name: profile.displayName,
-                avatar: profile.photos?.[0]?.value
             });
         }
         done(null, user);

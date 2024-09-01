@@ -8,8 +8,16 @@
       "default_title": "Careless Whisperer"
     },
     "permissions": [
-      "tabs"
+      "tabs",
+      "identity.email"
     ],
+    "oauth2": {
+      "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+      ]
+    },
     "web_accessible_resources": [
       {
         "resources": ["js/permissions.html", "js/requestPermission.js"],
