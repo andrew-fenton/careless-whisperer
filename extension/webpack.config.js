@@ -7,6 +7,7 @@ module.exports = {
         index: "./src/index.tsx",
         injectDOM: "./src/scripts/injectDOM.ts",
         requestPermission: "./src/scripts/requestPermission.ts",
+        background: "./src/scripts/background.ts",
     },
     mode: "production",
     module: {

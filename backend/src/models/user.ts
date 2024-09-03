@@ -5,8 +5,6 @@ interface UserAttributes {
   id: number;
   googleId: string;
   email: string;
-  name: string;
-  avatar: string | null;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
@@ -15,8 +13,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public id!: number;
   public googleId!: string;
   public email!: string;
-  public name!: string;
-  public avatar!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -35,14 +31,6 @@ User.init({
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  avatar: {
-    type: DataTypes.STRING,
-    allowNull: true,
   },
 }, {
   sequelize,

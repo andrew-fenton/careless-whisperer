@@ -2,10 +2,9 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import session from "express-session";
-import passport from "./config/passport";
 import sequelize from "./config/sequelize";
 import gptRouter from "./routes/gpt";
-import authRouter from "./routes/auth";
+import userRouter from "./routes/user";
 
 // Import models
 import "./models/user";
@@ -25,12 +24,10 @@ app.use(session({
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
-app.use("/auth", authRouter);
-app.use('/gpt', gptRouter);
+app.use("/gpt", gptRouter);
+app.use("/users", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Backend API");
@@ -42,7 +39,7 @@ const start = async () => {
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
-    await sequelize.sync();
+    await sequelize.sync({ force: false });
     console.log("Database and tables synced.");
 
     app.listen(3000, () => {
