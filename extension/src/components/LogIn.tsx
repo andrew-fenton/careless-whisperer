@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     try {
       const { id, email } = await getUserInfo();
       
-      await axios.post("/api/users", {
+      await axios.post("http://localhost:3000/users", {
         googleId: id,
         email: email,
       });

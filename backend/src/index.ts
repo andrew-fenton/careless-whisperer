@@ -44,7 +44,7 @@ const start = async () => {
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log("Database and tables synced.");
 
     app.listen(3000, () => {

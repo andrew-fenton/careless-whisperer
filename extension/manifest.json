@@ -7,12 +7,16 @@
       "default_popup": "js/index.html",
       "default_title": "Careless Whisperer"
     },
+    "background": {
+      "service_worker": "js/background.js"
+    },
     "permissions": [
       "tabs",
+      "identity",
       "identity.email"
     ],
     "oauth2": {
-      "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+      "client_id": "767318850804-vg960egptcv1hkq65ump9ka1m2kr5ttq.apps.googleusercontent.com",
       "scopes": [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile"
@@ -23,6 +27,9 @@
         "resources": ["js/permissions.html", "js/requestPermission.js"],
         "matches": ["*://*/*"]
       }
+    ],
+    "host_permissions": [
+      "http://localhost:3000/*"
     ],
     "content_scripts": [
       {

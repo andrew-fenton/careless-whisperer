@@ -3,6 +3,7 @@ import './App.css';
 import ChatBox from './components/ChatBox';
 import NavBar from './components/NavBar';
 import UploadingFile from './components/UploadingFile';
+import Login from './components/LogIn';
 
 export default function App() {
   const [isChatVisible, setIsChatVisible] = useState<boolean>(true);

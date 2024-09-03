@@ -8,7 +8,7 @@ const router = Router();
 
 router.post("/", async (req, res) => {
     try {
-        const { email, googleId} = req.body;
+        const { email, googleId } = req.body;
 
         let user = await User.findOne({ where: { googleId: googleId } });
 
