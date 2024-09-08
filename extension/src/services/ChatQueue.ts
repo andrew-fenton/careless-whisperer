@@ -65,7 +65,10 @@ class ChatQueue {
         this.currentTokenCount += messageTokenCount;
     }
 
-    public getHistory(): Message[] {
-        return this.queue;
+    public getHistory() {
+        return this.queue.map((message: Message) => ({
+            role: message.role,
+            content: message.content,
+        }));
     }
 }
