@@ -22,6 +22,7 @@ const ChatBox: React.FC = () => {
   const [isResponding, setIsResponding] = useState<boolean>(false);
   const [tooltipOpen, setTooltipOpen] = useState<number | null>(null);
   const [dots, setDots] = useState<string>('.');
+  const [ongoingVoiceInput, setOngoingVoiceInput] = useState<string>('');
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const handleSendMessage = async (message: string) => {
@@ -38,6 +39,7 @@ const ChatBox: React.FC = () => {
 
         setMessages((prevMessages) => [...prevMessages, response]);
         setIsResponding(false);
+        setOngoingVoiceInput(''); // Clear ongoing voice input after sending message
       }
     }
   };
@@ -45,7 +47,7 @@ const ChatBox: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage(inputValue);
+      handleSendMessage(inputValue || ongoingVoiceInput);
     }
   };
 
@@ -63,7 +65,7 @@ const ChatBox: React.FC = () => {
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, ongoingVoiceInput]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -131,25 +133,14 @@ const ChatBox: React.FC = () => {
                   {!isPrompt && (
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                       <Tooltip
-                        title="Copied to clipboard!"
+                        title="Copied!"
                         open={tooltipOpen === index}
                         onClose={() => setTooltipOpen(null)}
-                        disableFocusListener
-                        disableHoverListener
-                        disableTouchListener
                       >
                         <IconButton
                           onClick={() => copyToClipboard(message, index)}
-                          sx={{
-                            color: '#757575',
-                            '&:hover': {
-                              color: 'black',
-                            },
-                            fontSize: '0.75rem',
-                            padding: '0px',
-                            marginTop: '0',
-                          }}
                           size="small"
+                          sx={{ ml: 1 }}
                         >
                           <ContentCopyIcon fontSize="small" />
                         </IconButton>
@@ -160,48 +151,41 @@ const ChatBox: React.FC = () => {
               </ListItem>
             );
           })}
-          {isResponding && (
-            <ListItem sx={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <CircularProgress size={24} />
-              <Box sx={{ mt: 1, fontSize: '14px', color: '#757575' }}>cooking{dots}</Box>
-            </ListItem>
-          )}
-          <div ref={endOfMessagesRef} />
         </List>
+        <div ref={endOfMessagesRef} />
       </Paper>
-      <Box
-        component="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSendMessage(inputValue);
-        }}
-        sx={{
-          display: 'flex',
-          alignItems: 'center', // Vertically centers the children
-          justifyContent: 'space-between', // Ensures the TextareaAutosize takes up the rest of the space
-        }}
-      >
+
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TextareaAutosize
-          minRows={1}
-          maxRows={3}
-          value={inputValue}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInputValue(e.target.value)}
+          value={inputValue || ongoingVoiceInput} // Show ongoing voice input if available
+          onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type here, enter to send"
+          placeholder="Type or click mic to speak"
           style={{
             resize: 'none',
+            flexGrow: 1,
             padding: '8px',
-            fontSize: '16px',
-            boxSizing: 'border-box',
-            overflow: 'auto',
-            width: '100%', // Occupies all available space
-            borderRadius: '4px',
-            borderColor: '#ccc',
-            marginRight: '8px', // Adds space between the TextareaAutosize and the VoiceButton
+            border: 'none',
+            outline: 'none',
+            borderRadius: '8px',
+            backgroundColor: '#fff',
           }}
         />
-        <VoiceButton handleSendMessage={handleSendMessage} />
+        <VoiceButton setInputValue={setInputValue} setOngoingVoiceInput={setOngoingVoiceInput} />
       </Box>
+
+      {isResponding && (
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '60px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <CircularProgress size={20} />
+        </Box>
+      )}
     </Box>
   );
 };

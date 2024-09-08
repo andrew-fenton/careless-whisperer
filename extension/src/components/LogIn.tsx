@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, keyframes } from '@mui/material';
 import { Google as GoogleIcon } from '@mui/icons-material';
+import { getUserInfo } from '../controllers/UserInfo';
+import axios from 'axios';
 
 // Keyframes for the text rotation animation
 const rotateText = keyframes`
@@ -29,8 +31,18 @@ const Login: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleGoogleLogin = () => {
-    console.log('Google login clicked');
+  const handleGoogleLogin = async () => {
+    try {
+      const { id, email } = await getUserInfo();
+      
+      await axios.post("http://localhost:3000/users", {
+        googleId: id,
+        email: email,
+      });
+      
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
