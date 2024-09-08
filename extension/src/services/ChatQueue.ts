@@ -46,6 +46,7 @@ class ChatQueue {
     public enqueueMessage(message: string, role: 'user' | 'assistant') {
         const messageTokenCount = this.getTokenCount(message);
         
+        // Remove messages until enough space is made to enqueue new message
         while (this.currentTokenCount + messageTokenCount > this.maxTokenCount) {
             const oldestMessage = this.dequeue();
 
@@ -54,6 +55,7 @@ class ChatQueue {
             }
         }
 
+        // Enqueue new message
         const newMessage: Message = {
             role: role,
             content: message,
