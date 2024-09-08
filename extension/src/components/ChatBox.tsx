@@ -14,6 +14,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VoiceButton from './VoiceButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Message } from '../types/types';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -28,9 +29,13 @@ const ChatBox: React.FC = () => {
       if (!isResponding) {
         setIsResponding(true);
         const promptMessage = message;
+
         setInputValue('');
         setMessages((prevMessages) => [...prevMessages, promptMessage]);
-        const response = await handleSendQuery(promptMessage);
+
+        const history: Message[] = [{"role": "user", "content": promptMessage}]
+        const response = await ChatService.sendMessages(history);
+
         setMessages((prevMessages) => [...prevMessages, response]);
         setIsResponding(false);
       }
@@ -42,12 +47,6 @@ const ChatBox: React.FC = () => {
       e.preventDefault();
       handleSendMessage(inputValue);
     }
-  };
-
-  const handleSendQuery = async (prompt: string) => {
-    const response = await ChatService.sendPrompt(prompt);
-    console.log(response);
-    return response;
   };
 
   const copyToClipboard = (text: string, index: number) => {
