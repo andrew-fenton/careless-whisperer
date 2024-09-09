@@ -5,9 +5,7 @@
  * 
  */
 
-import { encoding_for_model } from 'tiktoken';
-
-const enc = encoding_for_model("gpt-4");
+const CHARACTERS_PER_TOKEN = 4; // each token ~ 3-4 chars
 
 interface Message {
     role: 'user' | 'assistant';
@@ -15,7 +13,7 @@ interface Message {
     tokenCount: number;
 }
 
-class ChatQueue {
+export class ChatQueue {
     private queue: Message[] = [];
     private maxTokenCount: number;
     private currentTokenCount: number;
@@ -26,7 +24,8 @@ class ChatQueue {
     }
 
     private getTokenCount(str: string): number {
-        return enc.encode(str).length;
+        // Approximating token count with characters due to CSP issues with tiktoken
+        return Math.ceil(str.length / CHARACTERS_PER_TOKEN);
     }
 
     private enqueue(message: Message) {
@@ -52,6 +51,8 @@ class ChatQueue {
 
             if (oldestMessage) {
                 this.currentTokenCount -= oldestMessage.tokenCount;
+            } else {
+                break;
             }
         }
 

@@ -14,7 +14,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import VoiceButton from './VoiceButton';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Message } from '../types/types';
+import { ChatQueue } from '../services/ChatQueue';
 
 const ChatBox: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -24,6 +24,7 @@ const ChatBox: React.FC = () => {
   const [dots, setDots] = useState<string>('.');
   const [ongoingVoiceInput, setOngoingVoiceInput] = useState<string>('');
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
+  const chatQueueRef = useRef(new ChatQueue(3500));  // 3.5k token limit to account for token approximation in ChatQueue
 
   const handleSendMessage = async (message: string) => {
     if (message.trim() !== '') {
@@ -34,9 +35,16 @@ const ChatBox: React.FC = () => {
         setInputValue('');
         setMessages((prevMessages) => [...prevMessages, promptMessage]);
 
-        const history: Message[] = [{"role": "user", "content": promptMessage}]
-        const response = await ChatService.sendMessages(history);
+        // Enqueue new prompt into chat history and then enqueue response
+        const chatQueue = chatQueueRef.current;
+        chatQueue.enqueueMessage(promptMessage, "user");
+        const chatHistory = chatQueue.getHistory();
+        console.log("Sending Info:", chatHistory);
+        const response = await ChatService.sendMessages(chatHistory);
+        chatQueue.enqueueMessage(response, "assistant");
+        console.log("Received Response:", chatQueue.getHistory());
 
+        // Update chat UI
         setMessages((prevMessages) => [...prevMessages, response]);
         setIsResponding(false);
         setOngoingVoiceInput(''); // Clear ongoing voice input after sending message

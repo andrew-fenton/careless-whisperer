@@ -25,7 +25,7 @@
     "web_accessible_resources": [
       {
         "resources": ["js/permissions.html", "js/requestPermission.js"],
-        "matches": ["*://*/*"]
+        "matches": ["<all_urls>"]
       }
     ],
     "host_permissions": [
