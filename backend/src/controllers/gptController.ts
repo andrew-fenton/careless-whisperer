@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import { Message } from "../types/types";
 dotenv.config();
 
 const openai = new OpenAI({
@@ -9,10 +10,10 @@ const openai = new OpenAI({
 });
 
 export class GPTController {
-    static async *gptQuery(query: string): AsyncGenerator<string, void, unknown> {
+    static async *gptQuery(messages: Message[]): AsyncGenerator<string, void, unknown> {
         const stream = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            messages: [{ role: "user", content: query }],
+            messages: messages,
             stream: true,
         });
     
